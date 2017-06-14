@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace Cimpress.FulfillmentLocationNetCore.IntegrationTests
 {
-    public class FulfillmentLocationV1ClientTests
+    public class FulfillmentLocationClientTests
     {
-        private FulfillmentLocationV1Client _client;
+        private FulfillmentLocationClient _client;
 
         private static readonly string _authorization = System.Environment.GetEnvironmentVariable("CIMPRESS_FULFILLMENT_LOCATION_BEARER_TOKEN");
         private static readonly string _url = System.Environment.GetEnvironmentVariable("CIMPRESS_FULFILLMENT_LOCATION_SERVICE_URL");
@@ -27,13 +27,13 @@ namespace Cimpress.FulfillmentLocationNetCore.IntegrationTests
                 QuoterLocationTag = "location:test"
         };
 
-        public FulfillmentLocationV1ClientTests()
+        public FulfillmentLocationClientTests()
         {
             if (String.IsNullOrEmpty(_authorization) || String.IsNullOrEmpty(_url) || String.IsNullOrEmpty(_testFulfillerId))
             {
                 throw new Exception("Please set up test variables in your environment.");
             }
-            _client = new FulfillmentLocationV1Client(new Uri(_url), _authorization);
+            _client = new FulfillmentLocationClient(new Uri(_url), _authorization);
         }
 
         [Fact]

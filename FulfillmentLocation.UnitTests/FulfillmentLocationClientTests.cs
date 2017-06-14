@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace Cimpress.FulfillmentLocationNetCore.UnitTests
 {
-    public class FulfillmentLocationV1ClientTests
+    public class FulfillmentLocationClientTests
     {
         private static readonly Uri _url = new Uri("https://www.example.com");
         private static readonly Func<string> _authorizationProvider = () => "Bearer xyz";
@@ -83,7 +83,7 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
                 }
             }
             yield return new object[] {
-                new FulfillmentLocationV1Client(_url, _authorizationProvider, httpMessageHandler)
+                new FulfillmentLocationClient(_url, _authorizationProvider, httpMessageHandler)
             };
         }
 
@@ -124,32 +124,32 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
 
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetSuccessfulClient))]
-        public async void GetFulfillmentLocations_ReturnsFulfillmentLocations(FulfillmentLocationV1Client client) {
+        [MemberData(nameof(FulfillmentLocationClientTests.GetSuccessfulClient))]
+        public async void GetFulfillmentLocations_ReturnsFulfillmentLocations(FulfillmentLocationClient client) {
             var fulfillmentLocations = await client.GetFulfillmentLocations();
 
             Assert.True(fulfillmentLocations.SequenceEqual(_fulfillmentLocations));
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetSuccessfulClient))]
-        public async void GetFulfillmentLocations_FiltersByFulfillerId(FulfillmentLocationV1Client client) {
+        [MemberData(nameof(FulfillmentLocationClientTests.GetSuccessfulClient))]
+        public async void GetFulfillmentLocations_FiltersByFulfillerId(FulfillmentLocationClient client) {
             var fulfillmentLocations = await client.GetFulfillmentLocations(_fulfillmentLocations.ElementAt(0).FulfillerId);
 
             Assert.True(fulfillmentLocations.SequenceEqual(_fulfillmentLocations.Where(fl => fl.FulfillerId == _fulfillmentLocations.ElementAt(0).FulfillerId)));
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetSuccessfulClient))]
-        public async void GetFulfillmentLocations_FiltersByInternalFulfillerId(FulfillmentLocationV1Client client) {
+        [MemberData(nameof(FulfillmentLocationClientTests.GetSuccessfulClient))]
+        public async void GetFulfillmentLocations_FiltersByInternalFulfillerId(FulfillmentLocationClient client) {
             var fulfillmentLocations = await client.GetFulfillmentLocations(_fulfillmentLocations.ElementAt(0).InternalFulfillerId);
 
             Assert.True(fulfillmentLocations.SequenceEqual(_fulfillmentLocations.Where(fl => fl.FulfillerId == _fulfillmentLocations.ElementAt(0).FulfillerId)));
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.Forbidden)]
-        public async void GetFulfillmentLocations_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.Forbidden)]
+        public async void GetFulfillmentLocations_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<AccessForbiddenException>(async () => {
                 await client.GetFulfillmentLocations();
@@ -157,8 +157,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.InternalServerError)]
-        public async void GetFulfillmentLocations_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.InternalServerError)]
+        public async void GetFulfillmentLocations_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<CommunicationFailureException>(async () => {
                 await client.GetFulfillmentLocations();
@@ -168,13 +168,13 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
 
         [Theory]
         [MemberData(nameof(GetSuccessfulClient))]
-        public async void GetFulfillmentLocation_ReturnsFulfillmentLocationByFulfillmentLocationId(FulfillmentLocationV1Client client)
+        public async void GetFulfillmentLocation_ReturnsFulfillmentLocationByFulfillmentLocationId(FulfillmentLocationClient client)
         {
             var fulfillmentLocation = await client.GetFulfillmentLocation(_fulfillmentLocations.ElementAt(0).FulfillmentLocationId);
 
             Assert.Equal(_fulfillmentLocations.ElementAt(0), fulfillmentLocation);
         }
-        public async void GetFulfillmentLocation_ReturnsFulfillmentLocationByInternalFulfillmentLocationId(FulfillmentLocationV1Client client)
+        public async void GetFulfillmentLocation_ReturnsFulfillmentLocationByInternalFulfillmentLocationId(FulfillmentLocationClient client)
         {
             var fulfillmentLocation = await client.GetFulfillmentLocation(_fulfillmentLocations.ElementAt(0).InternalFulfillmentLocationId);
 
@@ -182,8 +182,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.Forbidden)]
-        public async void GetFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.Forbidden)]
+        public async void GetFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<AccessForbiddenException>(async () => {
                 await client.GetFulfillmentLocation(String.Empty);
@@ -191,8 +191,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.NotFound)]
-        public async void GetFulfillmentLocation_ThrowsCorrectExceptionOnNotFound(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.NotFound)]
+        public async void GetFulfillmentLocation_ThrowsCorrectExceptionOnNotFound(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<LocationNotFoundException>(async () => {
                 await client.GetFulfillmentLocation(String.Empty);
@@ -200,8 +200,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.InternalServerError)]
-        public async void GetFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.InternalServerError)]
+        public async void GetFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<CommunicationFailureException>(async () => {
                 await client.GetFulfillmentLocation(String.Empty);
@@ -209,8 +209,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.Forbidden)]
-        public async void CreateFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.Forbidden)]
+        public async void CreateFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<AccessForbiddenException>(async () => {
                 await client.CreateFulfillmentLocation(_locationConfigurations.ElementAt(0));
@@ -218,8 +218,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.BadRequest)]
-        public async void CreateFulfillmentLocation_ThrowsCorrectExceptionOnBadRequest(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.BadRequest)]
+        public async void CreateFulfillmentLocation_ThrowsCorrectExceptionOnBadRequest(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<InvalidConfigurationException>(async () => {
                 await client.CreateFulfillmentLocation(_locationConfigurations.ElementAt(0));
@@ -227,8 +227,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.InternalServerError)]
-        public async void CreateFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.InternalServerError)]
+        public async void CreateFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<CommunicationFailureException>(async () => {
                 await client.CreateFulfillmentLocation(_locationConfigurations.ElementAt(0));
@@ -236,8 +236,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.Forbidden)]
-        public async void UpdateFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.Forbidden)]
+        public async void UpdateFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<AccessForbiddenException>(async () => {
                 await client.UpdateFulfillmentLocation("a1s2d3", _locationConfigurations.ElementAt(0));
@@ -245,8 +245,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.BadRequest)]
-        public async void UpdateFulfillmentLocation_ThrowsCorrectExceptionOnBadRequest(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.BadRequest)]
+        public async void UpdateFulfillmentLocation_ThrowsCorrectExceptionOnBadRequest(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<InvalidConfigurationException>(async () => {
                 await client.UpdateFulfillmentLocation("a1s2d3", _locationConfigurations.ElementAt(0));
@@ -254,8 +254,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.InternalServerError)]
-        public async void UpdateFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.InternalServerError)]
+        public async void UpdateFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<CommunicationFailureException>(async () => {
                 await client.UpdateFulfillmentLocation("a1s2d3", _locationConfigurations.ElementAt(0));
@@ -263,8 +263,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.Forbidden)]
-        public async void DeleteFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.Forbidden)]
+        public async void DeleteFulfillmentLocation_ThrowsCorrectExceptionOnForbidden(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<AccessForbiddenException>(async () => {
                 await client.DeleteFulfillmentLocation("a1s2d3");
@@ -272,8 +272,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.NotFound)]
-        public async void DeleteFulfillmentLocation_ThrowsCorrectExceptionOnNotFound(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.NotFound)]
+        public async void DeleteFulfillmentLocation_ThrowsCorrectExceptionOnNotFound(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<LocationNotFoundException>(async () => {
                 await client.GetFulfillmentLocation(String.Empty);
@@ -281,8 +281,8 @@ namespace Cimpress.FulfillmentLocationNetCore.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(FulfillmentLocationV1ClientTests.GetClient), HttpStatusCode.InternalServerError)]
-        public async void DeleteFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationV1Client client)
+        [MemberData(nameof(FulfillmentLocationClientTests.GetClient), HttpStatusCode.InternalServerError)]
+        public async void DeleteFulfillmentLocation_ThrowsCorrectExceptionOnOtherError(FulfillmentLocationClient client)
         {
             await Assert.ThrowsAsync<CommunicationFailureException>(async () => {
                 await client.DeleteFulfillmentLocation("a1s2d3");

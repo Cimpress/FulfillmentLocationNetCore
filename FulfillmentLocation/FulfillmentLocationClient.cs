@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Cimpress.FulfillmentLocationNetCore
 {
-    public class FulfillmentLocationV1Client
+    public class FulfillmentLocationClient : IFulfillmentLocationClient
     {
         private readonly Uri _url;
         private readonly HttpClient _httpClient;
@@ -24,7 +24,7 @@ namespace Cimpress.FulfillmentLocationNetCore
         };
 
         public Uri Url { get; private set; }
-        public FulfillmentLocationV1Client(Uri url, string authorization)
+        public FulfillmentLocationClient(Uri url, string authorization)
         {
             _url = url;
             _httpClient = new HttpClient();
@@ -33,7 +33,7 @@ namespace Cimpress.FulfillmentLocationNetCore
             _authorizationProvider = () => { return authorization; };
         }
 
-        public FulfillmentLocationV1Client(Uri url, Func<string> authorizationProvider)
+        public FulfillmentLocationClient(Uri url, Func<string> authorizationProvider)
         {
             _url = url;
             _httpClient = new HttpClient();
@@ -42,7 +42,7 @@ namespace Cimpress.FulfillmentLocationNetCore
             _authorizationProvider = authorizationProvider;
         }
 
-        public FulfillmentLocationV1Client(Uri url, Func<string> authorizationProvider, HttpMessageHandler httpMessageHandler)
+        public FulfillmentLocationClient(Uri url, Func<string> authorizationProvider, HttpMessageHandler httpMessageHandler)
         {
             _url = url;
             _httpClient = new HttpClient(httpMessageHandler);

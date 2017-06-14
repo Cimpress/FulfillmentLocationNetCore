@@ -1,0 +1,5 @@
+*/bin
+*/obj
+*/properties
+*/.vs
+*/*.csproj.user
