@@ -15,6 +15,7 @@ namespace Cimpress.FulfillmentLocationNetCore
     public class FulfillmentLocationClient : IFulfillmentLocationClient
     {
         private readonly Uri _url;
+	private readonly Uri _defaultUrl = new Uri("https://fulfillmentlocation.trdlnk.cimpress.io");
         private readonly HttpClient _httpClient;
         private readonly Func<string> _authorizationProvider;
         private static readonly IReadOnlyDictionary<string, string> _routes = new Dictionary<string, string>()
@@ -24,6 +25,31 @@ namespace Cimpress.FulfillmentLocationNetCore
         };
 
         public Uri Url { get; private set; }
+
+	public FulfillmentLocationClient(string authorization) {
+	    _url = _defaultUrl;
+	    _httpClient = new HttpClient();
+	    _ConfigureClient();
+
+	    _authorizationProvider = () => { return authorization; };
+	}
+
+	public FulfillmentLocationClient(Func<string> authorizationProvider) {
+            _url = _defaultUrl;
+            _httpClient = new HttpClient();
+            _ConfigureClient();
+    
+            _authorizationProvider = authorizationProvider;
+	}
+
+	public FulfillmentLocationClient(Func<string> authorizationProvider, HttpMessageHandler httpMessageHandler) {
+	    _url = _defaultUrl;
+	    _httpClient = new HttpClient(httpMessageHandler);
+	    _ConfigureClient();
+
+	    _authorizationProvider = authorizationProvider;
+	}
+
         public FulfillmentLocationClient(Uri url, string authorization)
         {
             _url = url;
