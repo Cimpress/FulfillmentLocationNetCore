@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.1.1</Version>
+    <Version>0.3.0</Version>
     <Authors>Trdelnik Squad &lt;TrdelnikSquad@cimpress.com&gt;</Authors>
     <Company>Cimpress</Company>
     <Product>Fulfillment Location Client for .NET Core</Product>
