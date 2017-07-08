@@ -1,5 +1,6 @@
 */bin
 */obj
 */properties
+**/.vscode
 */.vs
 */*.csproj.user

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cimpress.FulfillmentLocationNetCore", "Cimpress.FulfillmentLocationNetCore.csproj", "{EFE68454-D423-4B10-B427-DE33E01C8B35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cimpress.FulfillmentLocationNetCore", "Cimpress.FulfillmentLocationNetCore\Cimpress.FulfillmentLocationNetCore.csproj", "{EFE68454-D423-4B10-B427-DE33E01C8B35}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cimpress.FulfillmentLocationNetCore.IntegrationTests", "..\FulfillmentLocation.IntegrationTests\Cimpress.FulfillmentLocationNetCore.IntegrationTests.csproj", "{51BA7F15-EB11-4761-8A2D-D7D1C1491A9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cimpress.FulfillmentLocationNetCore.IntegrationTests", "Cimpress.FulfillmentLocationNetCore.IntegrationTests\Cimpress.FulfillmentLocationNetCore.IntegrationTests.csproj", "{51BA7F15-EB11-4761-8A2D-D7D1C1491A9E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cimpress.FulfillmentLocationNetCore.UnitTests", "..\FulfillmentLocation.UnitTests\Cimpress.FulfillmentLocationNetCore.UnitTests.csproj", "{E170103D-4CA4-49DE-B8D3-6B50B21A0147}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cimpress.FulfillmentLocationNetCore.UnitTests", "Cimpress.FulfillmentLocationNetCore.UnitTests\Cimpress.FulfillmentLocationNetCore.UnitTests.csproj", "{E170103D-4CA4-49DE-B8D3-6B50B21A0147}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
