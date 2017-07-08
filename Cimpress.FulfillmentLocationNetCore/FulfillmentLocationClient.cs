@@ -50,7 +50,7 @@ namespace Cimpress.FulfillmentLocationNetCore
             _authorizationProvider = authorizationProvider;
         }
 
-        public FulfillmentLocationClient(Uri url, string authorization)
+            public FulfillmentLocationClient(Uri url, string authorization)
         {
             _url = url;
             _httpClient = new HttpClient();
@@ -102,7 +102,7 @@ namespace Cimpress.FulfillmentLocationNetCore
                 RequestUri = builder.Uri,
                 Method = HttpMethod.Get,
                 Headers = {
-                    { HttpRequestHeader.Authorization.ToString(), _authorizationProvider() }
+                    { "Authorization", _authorizationProvider() },
                 }
             };
             var response = await _httpClient.SendAsync(request);
@@ -163,7 +163,7 @@ namespace Cimpress.FulfillmentLocationNetCore
                 RequestUri = builder.Uri,
                 Method = HttpMethod.Post,
                 Headers = {
-                    { HttpRequestHeader.Authorization.ToString(), _authorizationProvider() }
+                    { "Authorization", _authorizationProvider() },
                 },
                 Content = new StringContent(
                     JsonConvert.SerializeObject(locationConfiguration),
@@ -209,7 +209,7 @@ namespace Cimpress.FulfillmentLocationNetCore
                 RequestUri = builder.Uri,
                 Method = HttpMethod.Get,
                 Headers = {
-                    { HttpRequestHeader.Authorization.ToString(), _authorizationProvider() }
+                    { "Authorization", _authorizationProvider() }
                 }
             };
             var response = await _httpClient.SendAsync(request);
@@ -259,7 +259,7 @@ namespace Cimpress.FulfillmentLocationNetCore
                 RequestUri = builder.Uri,
                 Method = HttpMethod.Put,
                 Headers = {
-                    { HttpRequestHeader.Authorization.ToString(), _authorizationProvider() }
+                    { "Authorization", _authorizationProvider() }
                 },
                 Content = new StringContent(
                     JsonConvert.SerializeObject(locationConfiguration),
@@ -313,7 +313,7 @@ namespace Cimpress.FulfillmentLocationNetCore
                 RequestUri = builder.Uri,
                 Method = HttpMethod.Delete,
                 Headers = {
-                    { HttpRequestHeader.Authorization.ToString(), _authorizationProvider() }
+                    { "Authorization", _authorizationProvider() }
                 }
             };
             var response = await _httpClient.SendAsync(request);

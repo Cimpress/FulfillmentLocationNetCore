@@ -23,24 +23,24 @@ namespace Cimpress.FulfillmentLocationNetCore.Models
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var fulfillerIdentifier = new FulfillerIdentifier();
-            switch (Type.GetTypeCode(reader.ValueType))
+            var type = reader.ValueType;
+            if (type == typeof(string))
             {
-                case TypeCode.String:
-                    fulfillerIdentifier.FulfillerId = (String)serializer.Deserialize(reader);
-                    break;
-
-                case TypeCode.Int64:
-                    try
-                    {
-                        fulfillerIdentifier.InternalFulfillerId = Convert.ToInt32(serializer.Deserialize(reader));
-                    }
-                    catch
-                    {
-                        throw new JsonSerializationException("The fulfiller ID value is too big.");
-                    }
-                    break;
-
-                default:
+                fulfillerIdentifier.FulfillerId = (String)serializer.Deserialize(reader);
+            }
+            else if (type == typeof(Int64))
+            {
+                try
+                {
+                    fulfillerIdentifier.InternalFulfillerId = Convert.ToInt32(serializer.Deserialize(reader));
+                }
+                catch
+                {
+                    throw new JsonSerializationException("The fulfiller ID value is too big.");
+                }
+            }
+            else
+            {
                     throw new JsonSerializationException("The type of value is unrecognized.");
             }
             return fulfillerIdentifier;
