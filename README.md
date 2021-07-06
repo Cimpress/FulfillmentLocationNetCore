@@ -2,7 +2,7 @@
 
 A thin client library for Cimpress' Fulfillment Location service.
 
-Target platform: .NET Standard 1.3
+Target platform: .NET Standard 2.0
 
 ## Support
 
